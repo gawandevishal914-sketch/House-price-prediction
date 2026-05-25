@@ -2,15 +2,20 @@ import streamlit as st
 import joblib
 import numpy as np
 
-# Load model
-model = joblib.load("models/house_price_model.pkl")
+# Load trained model
+model = joblib.load(
+    "house-price-prediction/models/house_price_model.pkl"
+)
 
-st.set_page_config(page_title="House Price Predictor")
+# Page settings
+st.set_page_config(page_title="House Price Prediction")
 
+# Title
 st.title("🏠 House Price Prediction System")
 
-st.write("Enter house details below")
+st.write("Enter house details below to predict price")
 
+# User inputs
 bedrooms = st.number_input("Bedrooms", 1, 10)
 bathrooms = st.number_input("Bathrooms", 1.0, 10.0)
 sqft_living = st.number_input("Living Area (sqft)", 500, 10000)
@@ -23,6 +28,7 @@ sqft_above = st.number_input("Sqft Above", 500, 10000)
 sqft_basement = st.number_input("Basement Sqft", 0, 5000)
 yr_built = st.number_input("Year Built", 1900, 2025)
 
+# Prediction button
 if st.button("Predict Price"):
 
     features = np.array([[
@@ -41,4 +47,6 @@ if st.button("Predict Price"):
 
     prediction = model.predict(features)
 
-    st.success(f"Predicted House Price: ${prediction[0]:,.2f}")
+    st.success(
+        f"Predicted House Price: ${prediction[0]:,.2f}"
+    )
