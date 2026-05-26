@@ -2,103 +2,78 @@ import streamlit as st
 import joblib
 import numpy as np
 
-# Cache model loading
+# Load model
 @st.cache_resource
 def load_model():
-    return joblib.load("models/house_price_model.pkl")
+    return joblib.load(
+        "house-price-prediction/models/house_price_model.pkl"
+    )
 
-# Load model
 model = load_model()
 
-# Page settings
+# Page config
 st.set_page_config(
     page_title="House Price Prediction",
-    page_icon="🏠",
-    layout="centered"
+    page_icon="🏠"
 )
 
 # Title
-st.title("🏠 House Price Prediction System")
+st.title("🏠 House Price Prediction")
 
-st.write("Enter house details below to predict house price")
+st.write("Enter house details below")
 
 # Inputs
-bedrooms = st.number_input(
-    "Bedrooms",
-    min_value=1,
-    max_value=10,
-    value=3
-)
+bedrooms = st.number_input("Bedrooms", 1, 10, 3)
 
-bathrooms = st.number_input(
-    "Bathrooms",
-    min_value=1.0,
-    max_value=10.0,
-    value=2.0
-)
+bathrooms = st.number_input("Bathrooms", 1.0, 10.0, 2.0)
 
 sqft_living = st.number_input(
     "Living Area (sqft)",
-    min_value=500,
-    max_value=10000,
-    value=2000
+    500,
+    10000,
+    2000
 )
 
 sqft_lot = st.number_input(
     "Lot Area (sqft)",
-    min_value=500,
-    max_value=50000,
-    value=5000
+    500,
+    50000,
+    5000
 )
 
-floors = st.number_input(
-    "Floors",
-    min_value=1,
-    max_value=5,
-    value=2
-)
+floors = st.number_input("Floors", 1, 5, 2)
 
 waterfront = st.selectbox(
     "Waterfront",
     [0, 1]
 )
 
-view = st.slider(
-    "View Rating",
-    0,
-    4,
-    2
-)
+view = st.slider("View Rating", 0, 4, 2)
 
-condition = st.slider(
-    "Condition",
-    1,
-    5,
-    3
-)
+condition = st.slider("Condition", 1, 5, 3)
 
 sqft_above = st.number_input(
     "Sqft Above",
-    min_value=500,
-    max_value=10000,
-    value=1500
+    500,
+    10000,
+    1500
 )
 
 sqft_basement = st.number_input(
     "Basement Sqft",
-    min_value=0,
-    max_value=5000,
-    value=500
+    0,
+    5000,
+    500
 )
 
 yr_built = st.number_input(
     "Year Built",
-    min_value=1900,
-    max_value=2025,
-    value=2010
+    1900,
+    2025,
+    2010
 )
 
-# Prediction button
+# Prediction
 if st.button("Predict Price"):
 
     features = np.array([[
@@ -118,5 +93,5 @@ if st.button("Predict Price"):
     prediction = model.predict(features)
 
     st.success(
-        f"Predicted House Price: ${prediction[0]:,.2f}"
+        f"Predicted Price: ${prediction[0]:,.2f}"
     )
