@@ -2,31 +2,101 @@ import streamlit as st
 import joblib
 import numpy as np
 
-# Load trained model
-model = joblib.load(
-    "house-price-prediction/models/house_price_model.pkl"
-)
+# Cache model loading
+@st.cache_resource
+def load_model():
+    return joblib.load("models/house_price_model.pkl")
+
+# Load model
+model = load_model()
 
 # Page settings
-st.set_page_config(page_title="House Price Prediction")
+st.set_page_config(
+    page_title="House Price Prediction",
+    page_icon="🏠",
+    layout="centered"
+)
 
 # Title
 st.title("🏠 House Price Prediction System")
 
-st.write("Enter house details below to predict price")
+st.write("Enter house details below to predict house price")
 
-# User inputs
-bedrooms = st.number_input("Bedrooms", 1, 10)
-bathrooms = st.number_input("Bathrooms", 1.0, 10.0)
-sqft_living = st.number_input("Living Area (sqft)", 500, 10000)
-sqft_lot = st.number_input("Lot Area (sqft)", 500, 50000)
-floors = st.number_input("Floors", 1, 5)
-waterfront = st.selectbox("Waterfront", [0, 1])
-view = st.slider("View Rating", 0, 4)
-condition = st.slider("Condition", 1, 5)
-sqft_above = st.number_input("Sqft Above", 500, 10000)
-sqft_basement = st.number_input("Basement Sqft", 0, 5000)
-yr_built = st.number_input("Year Built", 1900, 2025)
+# Inputs
+bedrooms = st.number_input(
+    "Bedrooms",
+    min_value=1,
+    max_value=10,
+    value=3
+)
+
+bathrooms = st.number_input(
+    "Bathrooms",
+    min_value=1.0,
+    max_value=10.0,
+    value=2.0
+)
+
+sqft_living = st.number_input(
+    "Living Area (sqft)",
+    min_value=500,
+    max_value=10000,
+    value=2000
+)
+
+sqft_lot = st.number_input(
+    "Lot Area (sqft)",
+    min_value=500,
+    max_value=50000,
+    value=5000
+)
+
+floors = st.number_input(
+    "Floors",
+    min_value=1,
+    max_value=5,
+    value=2
+)
+
+waterfront = st.selectbox(
+    "Waterfront",
+    [0, 1]
+)
+
+view = st.slider(
+    "View Rating",
+    0,
+    4,
+    2
+)
+
+condition = st.slider(
+    "Condition",
+    1,
+    5,
+    3
+)
+
+sqft_above = st.number_input(
+    "Sqft Above",
+    min_value=500,
+    max_value=10000,
+    value=1500
+)
+
+sqft_basement = st.number_input(
+    "Basement Sqft",
+    min_value=0,
+    max_value=5000,
+    value=500
+)
+
+yr_built = st.number_input(
+    "Year Built",
+    min_value=1900,
+    max_value=2025,
+    value=2010
+)
 
 # Prediction button
 if st.button("Predict Price"):
